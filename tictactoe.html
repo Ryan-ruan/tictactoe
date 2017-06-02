@@ -10,30 +10,106 @@
   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
   crossorigin="anonymous"></script>
   <script src='js/main.js' charset="utf-8"></script>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
   <title>Document</title>
 </head>
 <body>
-  <h1>tic tac toe</h1>
+  <h1 class="animated slideInDown" >Ryan's tic tac toe</h1>
+
+  <div>
+    <table id="tableOne" class="animated flipInX">
+      <tr class= 'row'>
+        <td id='1'></td>
+        <td id='2'></td>
+        <td id='3'></td>
+      </tr>
+      <tr class= 'row'>
+        <td id='4'></td>
+        <td id='5'></td>
+        <td id='6'></td>
+      </tr>
+      <tr class= 'row'>
+        <td id='7'></td>
+        <td id='8'></td>
+        <td id='9'></td>
+      </tr>
+    </table>
 
 
-  <table>
-    <tr class= 'row'>
-      <td id='11'></td>
-      <td id='12'></td>
-      <td id='13'></td>
-    </tr>
-    <tr class= 'row'>
-      <td id='21'></td>
-      <td id='22'></td>
-      <td id='23'></td>
-    </tr>
-    <tr class= 'row'>
-      <td id='31'></td>
-      <td id='32'></td>
-      <td id='33'></td>
-    </tr>
-  </table>
+    <table id="tableTwo" style="display: none" class="animated flipInX">
+      <tr class= 'row'>
+        <td id='1'></td>
+        <td id='2'></td>
+        <td id='3'></td>
+        <td id='4'></td>
+      </tr>
+      <tr class= 'row'>
+        <td id='5'></td>
+        <td id='6'></td>
+        <td id='7'></td>
+        <td id='8'></td>
+      </tr>
+      <tr class= 'row'>
+        <td id='9'></td>
+        <td id='10'></td>
+        <td id='11'></td>
+        <td id='12'></td>
+      </tr>
+      <tr class= 'row'>
+        <td id='13'></td>
+        <td id='14'></td>
+        <td id='15'></td>
+        <td id='16'></td>
+      </tr>
+    </table>
+    <div id="popDiv" style="display:none" >
+    <p class = "whoWins">X is the winner</p>
+    <button id="restartButton">restart</button>
+  </div>
+</div>
+
+
+
+
+  <div id = "banner" class = "animated slideInUp">
+    Game start
+  </div>
+
+
+
+  <div id="scoreBoard" class="animated slideInUp">
+    <div class='panel'>
+      <span class="player1">player 1</span>
+      <span class="currentPlayer" >x</span>
+      <span class="currentPlayer"style="display: none">O</span>
+      <div class="score1">0</div>
+    </div>
+    <div class='panel'> Ties
+      <div class="scoreTie">0</div>
+    </div>
+    <div class='panel'>
+      <span class="playerAI1"> player 2</span>
+      <span class="playerAI1" style="display: none">computer</span>
+      <span class="currentPlayer" >O</span>
+      <span class="currentPlayer"style="display: none">X</span>
+      <div class="score2">0</div>
+    </div>
+    <div id="playerSwitch">
+      <button class="playerAI" id="clickAI">Against AI</button>
+      <button class="playerAI" style="display: none">Two players</button>
+
+
+    </div>
+    <div id ="swiftXO">
+      <button class="swift">x/o</button>
+    </div>
+    <div id ="table4x4">
+      <button class="swift2">4x4</button>
+      <button class="swift2" style="display: none">3x3</button>
+
+    </div>
+  </div>
+
 
 </body>
 </html>
