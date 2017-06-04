@@ -1,16 +1,38 @@
+
+
+
+
 var myClicks = 0;   //inital the clicks
-
+var score1= 0;
+var score2= 0;
+var scoreTie=0;
 var currentPlayer = 'x';// inital the player!!
-
 var modeAIOn = false; // to indicate whether AI mode is on
-
-
 var gameOver = false;
+
+var game = {
+  clicks: '',
+  x: {
+    moves: [],
+    score: 0,
+    image: '',
+  },
+  o: {
+    moves: [],
+    score: 0,
+    image: '',
+  }
+};
+
+// game.x.moves
+// game['x'].moves
+// game[ currentPlayer ].moves
 
 var newGame = function(){
     x =[];
     o =[];
     $('td').text("");
+    $("#banner").text("");
     currentPlayer === 'x';
     gameOver = false;
     modeAIOn = false;
@@ -20,25 +42,29 @@ var newGame = function(){
     scoreTie=0;
 };
 
+// var moveToMake = computerAI();
+// $('#' + moveToMake).text(currentPlayer);
+
 var computerAI =function(){
   if ($('#5').text()==='') {
     $('#5').text(currentPlayer);
   } else if ($('#1').text()==='') {
     $('#1').text(currentPlayer);
+  } else if  ($('#3').text()==='') {   // if (board[3] === null
+    $('#3').text(currentPlayer);
+    // return 3;
+  } else if  ($('#7').text()==='') {
+    $('#7').text(currentPlayer);
+  } else if  ($('#9').text()==='') {
+    $('#9').text(currentPlayer);
   } else if  ($('#2').text()==='') {
     $('#2').text(currentPlayer);
-  } else if  ($('#3').text()==='') {
-    $('#3').text(currentPlayer);
   } else if  ($('#4').text()==='') {
     $('#4').text(currentPlayer);
   } else if  ($('#6').text()==='') {
     $('#6').text(currentPlayer);
-  } else if  ($('#7').text()==='') {
-    $('#7').text(currentPlayer);
   } else if  ($('#8').text()==='') {
     $('#8').text(currentPlayer);
-  } else if  ($('#9').text()==='') {
-    $('#9').text(currentPlayer);
   } else if  ($('#10').text()==='') {
     $('#10').text(currentPlayer);
     } else if  ($('#11').text()==='') {
@@ -49,22 +75,71 @@ var computerAI =function(){
   currentPlayer = "x";
 };
 
-  var score1= 0;
-  var score2= 0;
-  var scoreTie=0;
+
 
 $(document).ready(function(){
   var x = [];
   var o = [];
 
-  // from stackoverflow
-  // $("#tableOne").on(
-  //     "transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd",
-  //     function() {
-  //         $(this).removeClass("animated flipInX");//deli
-  //         $(this).removeClass("animated slideInUp");
-  //     }
-  // );
+  // var moves = ['x', null, null, null, 'o', null, null, null, null, ];
+
+  // moves = [
+  //   [0,1,2],
+  //   [3,4,5],
+  //   [6,7,8]
+  // ];
+  //
+  // moves[i][j]
+
+  var shortWinner = function( player ){
+
+    // var moves = game[ player ].moves;
+    var moves;
+    if( player === 'x'){
+      moves = x;
+    } else {
+      moves = o;
+    }
+
+    if (
+      // moves[1] === player
+      (moves.includes('1') && moves.includes('2') && moves.includes('3')) ||
+      (moves.includes('4') && moves.includes('5') && moves.includes('6')) ||
+      (moves.includes('7') && moves.includes('8') && moves.includes('9')) ||
+      (moves.includes('1') && moves.includes('4') && moves.includes('7')) ||
+      (moves.includes('2') && moves.includes('5') && moves.includes('8')) ||
+      (moves.includes('3') && moves.includes('6') && moves.includes('9')) ||
+      (moves.includes('1') && moves.includes('5') && moves.includes('9')) ||
+      (moves.includes('3') && moves.includes('5') && moves.includes('7'))) {
+
+        gameOver = true;
+
+        if( player === 'x'){
+          score1 += 1;
+          // $('.score' + player  )  // '.scorex' and '.scoreo'
+          $(".score1").text(score1);
+        } else {
+          // player 'o'
+          score2 += 1;
+          $(".score2").text(score1);
+        }
+
+        $('#tableOne').addClass('disappear')
+        $('#popDiv').show();
+        $('.whoWins').text( player.toUpperCase() + " is the winner");
+        $("#banner").text("Game Over");
+
+        return true;
+    }
+
+    if (myClicks === 9) {
+      scoreTie+=1;
+      $(".scoreTie").text(scoreTie);
+      $('.whoWins').text("It's a tie");
+    }
+
+    return false;
+  };
 
   var winner = function(){
     if (
@@ -81,13 +156,17 @@ $(document).ready(function(){
         score1+=1;
         $(".score1").text(score1);
         $('#popDiv').show();
+        $('.whoWins').text("X is the winner");
         $("#banner").text("Game Over");
-        if (myClicks === 8) {
+        if (myClicks === 9) {
           scoreTie+=1;
           $(".scoreTie").text(scoreTie);
+          $('.whoWins').text("It's a tie");
         }
 
-    } if(
+    }
+
+    if(
       (o.includes('1') && o.includes('2') && o.includes('3'))||
       (o.includes('4') && o.includes('5') && o.includes('6'))||
       (o.includes('7') && o.includes('8') && o.includes('9'))||
@@ -101,10 +180,12 @@ $(document).ready(function(){
         score2+=1;
           $(".score2").text(score2);
           $('#popDiv').show();
+          $('.whoWins').text("o is the winner");
           $("#banner").text("Game Over");
-          if (myClicks === 8) {
+          if (myClicks === 9) {
             scoreTie+=1;
             $(".scoreTie").text(scoreTie);
+            $("#banner").text("It's a tie");
           }
       }
     };
@@ -112,7 +193,7 @@ $(document).ready(function(){
 
 //game start
     $("td").on('click',function(){
-      debugger;
+      // debugger;
       if(modeAIOn) {
         return;
       }
@@ -120,34 +201,38 @@ $(document).ready(function(){
       if( gameOver ){
         return;
       }
-      if(!$(this).text("")) {
+      if($(this).text()) {
         $("#banner").text("Oops,someone already there!");
-        debugger;
       } else {
         myClicks += 1;
         console.log('clicks', myClicks);
 
+
         if ( currentPlayer === 'x') {
           x.push(this.id);
+          shortWinner( currentPlayer );  // check for winner!
+
           currentPlayer = 'o';
           console.log(x);
           $(this).text('x');
           $("#banner").text("O is the next");
-          winner(this);
+          // winner(this);
 
-        }
-        else if ( currentPlayer === 'o') {
+        } else if ( currentPlayer === 'o') {
           o.push(this.id);
+          shortWinner( currentPlayer );  // check for winner!
+
           currentPlayer = 'x';
           console.log(o);
           $(this).text('o');
           $("#banner").text("X is the next");
-          winner(this);
+          // winner(this);
+
         }
 
     }
 
-  });  // 1gameover full of chess alert 2AI
+  });
 
   //=====================AI MODE IS ON!!!!!!!===============
 
@@ -161,19 +246,25 @@ $(document).ready(function(){
       return;
     }
 
-    if(!$(this).text("")) {
+    if($(this).text()) {
       $("#banner").text("Oops,someone already there!");
     } else {
       myClicks += 1;
       console.log('clicks', myClicks);
 
+
+
       if ( currentPlayer === 'x') {
+
         x.push(this.id);
-        currentPlayer = 'o';
+        shortWinner( currentPlayer );
+
+        currentPlayer = 'o';  // switch player
         console.log(x);
         $(this).text('x');
         $("#banner").text("O is the next");
-        winner(this);
+        // winner(this);
+
         computerAI();
 
       }
@@ -189,11 +280,9 @@ $(document).ready(function(){
 
 
   $("#playerSwitch").on("click",function(){
-
     $( ".playerAI" ).toggle();
     $( ".playerAI1" ).toggle();
     newGame();
-
     modeAIOn = !modeAIOn
   });//player2/or AI
 
@@ -216,9 +305,6 @@ $("#swiftXO").on("click",function(){
     currentPlayer = 'x';
   }
 });//change x/o
-
-
-
 
 
 });//doc ready
